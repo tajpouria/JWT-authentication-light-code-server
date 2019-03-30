@@ -4,7 +4,10 @@ const config = require("../config");
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 
-const jwtOption = {};
+const jwtOption = {
+  jwtFromRequest: ExtractJwt.fromHeader("authoriztion"),
+  scretOrKey: config.secret
+};
 
 const jwtStarategy = new JwtStrategy(jwtOption, function(payload, done) {
   User.findById(payload.sub, function(err, user) {
@@ -19,3 +22,5 @@ const jwtStarategy = new JwtStrategy(jwtOption, function(payload, done) {
     }
   });
 });
+
+passport.use(jwtStarategy);
