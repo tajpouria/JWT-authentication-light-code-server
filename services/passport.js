@@ -5,8 +5,8 @@ const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 const LocalStrategy = require("passport-local");
 
-const localOption = { usernameField: "email" };
-const localLogin = new LocalStrategy(localOption, function(
+const localOptions = { usernameField: "email" };
+const localLogin = new LocalStrategy(localOptions, function(
   email,
   password,
   done
@@ -18,6 +18,7 @@ const localLogin = new LocalStrategy(localOption, function(
     if (!user) {
       return done(null, false);
     }
+
     user.comparePassword(password, function(err, isMatch) {
       if (err) {
         return done(err);
@@ -25,6 +26,7 @@ const localLogin = new LocalStrategy(localOption, function(
       if (!isMatch) {
         return done(null, false);
       }
+
       return done(null, user);
     });
   });
